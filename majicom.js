@@ -482,7 +482,7 @@ function createDiagramSlide(slide, data) {
     let cs = [];
     for ( let r=0 ; r<rows ; r++ ) {
       const card = cards[r];
-      setTextwParam(card, data.lanes[l].items[r], {align: "CENTER"});
+      setTextwStyle(card, data.lanes[l].items[r], {align: "CENTER"});
 
       // カードを矢印でつなげる
       cs.push(card.getConnectionSites());
