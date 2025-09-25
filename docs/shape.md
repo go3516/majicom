@@ -18,6 +18,8 @@
 
 各要素の定義オブジェクトは、以下のプロパティを持つことができます。
 
+#### 共通
+
 | プロパティ | 型 | 説明 |
 | :--- | :--- | :--- |
 | `left` | `Number` | 親要素の左上からのX座標 (px) |
@@ -28,10 +30,32 @@
 | `topR` | `Number` | 親要素の高さに対する相対的なY座標 (比率) |
 | `widthR` | `Number` | 親要素の幅に対する相対的な幅 (比率) |
 | `heightR` | `Number` | 親要素の高さに対する相対的な高さ (比率) |
-| `centerW` | `Boolean` | 水平方向中央揃えの基準点として扱うか |
-| `centerH` | `Boolean` | 垂直方向中央揃えの基準点として扱うか |
+| `align` | `String` | テキストの垂直方向の配置 (`TOP`, `MIDDLE`, `BOTTOM`)。 |
+
+#### insertTextBox 用
+
+| プロパティ | 型 | 説明 |
+| :--- | :--- | :--- |
+| `centerW` | `Boolean` | 水平方向で中央揃え |
+| `centerH` | `Boolean` | 垂直方向で中央揃え |
+
+#### insertShapeRelative 用
+
+| プロパティ | 型 | 説明 |
+| :--- | :--- | :--- |
+| `offsetW` | `Number` | 親オブジェクトからの水平オフセット(px) |
+| `offsetH` | `Number` | 親オブジェクトからの垂直オフセット(px) |
+| `color` | `String` | 図形の塗りつぶし色。`CONFIG.COLORS`のキー名 (例: `"primary_color"`) またはHEXカラーコード (例: `"#4285F4"`) で指定 |
+| `border` | `String` | 図形の境界線の色。`CONFIG.COLORS`のキー名 (例: `"border"`) またはHEXカラーコード (例: `"#dadce0"`) で指定 |
+| `alpha` | `Number` | 塗りつぶしの透明度 (0.0 ～ 1.0) |
 | `shapetype` | `String` | 図形の種類 (`ELLIPSE`, `ROUND_RECTANGLE` など) |
+
+#### insertCards 用
+
+| プロパティ | 型 | 説明 |
+| :--- | :--- | :--- |
 | `ratio` | `Object` | カードレイアウトなどで使用される幅と高さの比率 (`{W: 10, H: 8}`) |
+
 
 ---
 
@@ -80,15 +104,15 @@
 ---
 
 ### `contentSlide`
-**基準: ページ**
+**基準: ページ** (`align` は `TOP` 固定)
 
 基本的なコンテンツスライドの要素定義です。`faq`スライドでも`contentSlide.body`が利用されます。
 
 | 要素 | プロパティと値 |
 | :--- | :--- |
-| `body` | `{ left: 25, top: 140, width: 910, height: 350 }` |
-| `twoColLeft` | `{ left: 25, top: 140, width: 440, height: 350 }` |
-| `twoColRight` | `{ left: 495, top: 140, width: 440, height: 350 }` |
+| `body` | `{ left: 25, top: 140, width: 910, height: 350, align: "TOP" }` |
+| `twoColLeft` | `{ left: 25, top: 140, width: 440, height: 350, align: "TOP" }` |
+| `twoColRight` | `{ left: 495, top: 140, width: 440, height: 350, align: "TOP" }` |
 
 ---
 
@@ -100,7 +124,7 @@
 | 要素 | プロパティと値 |
 | :--- | :--- |
 | `title` | `{ left: 25, top: 30, width: 900, height: 60 }` |
-| `subhead` | `{ left: 25, top: 90, width: 900, height: 40 }` |
+| `subhead` | `{ left: 25, top: 90, width: 900, height: 40, align: "TOP" }` |
 
 ---
 
@@ -117,7 +141,7 @@
 | :--- | :--- |
 | `area` | `{ left: 25, top: 130, width: 910, height: 360 }` |
 | `cards` | `{ left: 25, top: 190, width: 910, height: 300 }` |
-| `table` | `{ left: 40, top: 160, width: 890, height: 330 }` |
+| `table` | `{ left: 40, top: 160, width: 890, height: 330, headerColor: "bg_gray" }` |
 
 ---
 
@@ -128,8 +152,8 @@
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `head` | `body.cards` | `{ left: 10, top: -40, width: 420, height: 40 }` |
-| `body` | `compareSlide.head` | `{ left: 0, top: 40, widthR: 1, height: 240 }` |
+| `head` | `body.cards` | `{ left: 10, top: -40, width: 420, height: 40, color: "primary_color", border: "border" }` |
+| `body` | `compareSlide.head` | `{ left: 0, top: 40, widthR: 1, height: 240, color: "bg_gray", border: "border" }` |
 
 ---
 
@@ -140,7 +164,7 @@
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `title` | `body.cards` | `{ left: 10, top: -40, width: 420, height: 40 }` |
+| `title` | `body.cards` | `{ left: 10, top: -40, width: 420, height: 40, color: "primary_color" }` |
 | `card` | `statsCompareSlide.title` | `{ left: 0, top: 10, widthR: 1, height: 240, ratio: {W:1, H:4} }` |
 | `label` | `statsCompareSlide.card` | `{ left: 0, topR: 1/10, widthR: 1/2, heightR: 2/10 }` |
 
@@ -153,8 +177,8 @@
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `title` | `body.cards` | `{ left: 10, top: -30, width: 420, height: 30 }` |
-| `card` | `diagramSlide.title` | `{ leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4} }` |
+| `title` | `body.cards` | `{ left: 10, top: -30, width: 420, height: 30, color: "bg_gray", border: "border" }` |
+| `card` | `diagramSlide.title` | `{ leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4}, color: "bg_white", border: "border" }` |
 
 ---
 
@@ -177,8 +201,8 @@
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
 | `card` | `body.area` | `{ left: 20, top: 20, width: 420, height: 280 }` |
-| `head` | `headerCards.card` | `{ left: 0, top: 0, widthR: 1, height: 40 }` |
-| `body` | `headerCards.head` | `{ left: 0, topR: 1, widthR: 1, height: 240 }` |
+| `head` | `headerCards.card` | `{ left: 0, top: 0, widthR: 1, height: 40, color: "primary_color", border: "border" }` |
+| `body` | `headerCards.head` | `{ left: 0, topR: 1, widthR: 1, height: 240, border: "border" }` |
 
 ---
 
@@ -189,7 +213,7 @@ KPI表示用スライドの要素定義です。
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `kpi` | `body.area` | `{ left: 20, top: 20, width: 420, height: 240 }` |
+| `kpi` | `body.area` | `{ left: 20, top: 20, width: 420, height: 240, border: "border" }` |
 | `label` | `kpiSlide.kpi` | `{ leftR: 1/20, topR: 1/20, widthR: 9/10, heightR: 4/20 }` |
 | `change` | `kpiSlide.kpi` | `{ leftR: 1/20, topR: 15/20, widthR: 9/10, heightR: 4/20 }` |
 
@@ -202,7 +226,7 @@ KPI表示用スライドの要素定義です。
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `numBox` | `body.area` |`{ left: 40, top: 40, width: 28, height: 28 }` |
+| `numBox` | `body.area` |`{ left: 40, top: 40, width: 28, height: 28, color: "primary_color" }` |
 | `process` | `body.area` |`{ left: 80, top: 40, width: 800, height: 28 }` |
 
 ---
@@ -214,7 +238,7 @@ KPI表示用スライドの要素定義です。
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `card` | `body.area` | `{ left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4} }` |
+| `card` | `body.area` | `{ left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4}, color: "bg_gray", border: "border" }` |
 
 ---
 
@@ -225,7 +249,7 @@ KPI表示用スライドの要素定義です。
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `quoteMark` | `body.area` | `{ left: 20, top: 60, width: 100, height: 100 }` |
+| `quoteMark` | `body.area` | `{ left: 20, top: 60, width: 100, height: 100, align: "TOP" }` |
 | `quoteText` | `body.area` | `{ left: 120, top: 80, width: 700, height: 150 }` |
 | `author` | `body.area` | `{ left: 150, top: 240, width: 700, height: 30 }` |
 
@@ -238,9 +262,9 @@ KPI表示用スライドの要素定義です。
 
 | 要素 | 基準 | プロパティと値 |
 | :--- | :--- | :--- |
-| `dot` | `body.area` | `{ left: 60, top: 160, width: 10, height: 10, shapetype: "ELLIPSE" }` |
-| `label` | `timelineSlide.dot` | `{ left: -45, top: -80, width: 100, height: 70 }` |
-| `date` | `timelineSlide.dot` | `{ left: -45, top: 20, width: 100, height: 20 }` |
+| `dot` | `body.area` | `{ left: 60, top: 160, width: 10, height: 10, shapetype: "ELLIPSE", color: "primary_color" }` |
+| `label` | `timelineSlide.dot` | `{ left: -45, top: -80, width: 100, height: 70, align: "BOTTOM" }` |
+| `date` | `timelineSlide.dot` | `{ left: -45, top: 20, width: 100, height: 20, align: "TOP" }` |
 
 
 ## Notes

@@ -63,9 +63,11 @@ const  SHAPE = {
     width:  960,
     height: 540,
     ratio: {W:10, H:8},
+    align: "MIDDLE",
+    shapetype: "TEXT_BOX",
   },
 
-  // --- 基本スライド、パーツ
+  // --- 基本スライド、パーツ(insertTextBox)
     titleSlide: {
       title:        { left: 50,  top: 200, width: 830, height: 90, centerH: true},
       date:         { left: 50,  top: 450, width: 250, height: 40 },
@@ -79,39 +81,39 @@ const  SHAPE = {
     },
 
     contentSlide: {   // FAQも contentSlide.boy 利用
-      body:         { left: 25,  top: 140, width: 910, height: 350 },
-      twoColLeft:   { left: 25,  top: 140, width: 440, height: 350 },
-      twoColRight:  { left: 495, top: 140, width: 440, height: 350 }
+      body:         { left: 25,  top: 140, width: 910, height: 350, align: "TOP" },
+      twoColLeft:   { left: 25,  top: 140, width: 440, height: 350, align: "TOP" },
+      twoColRight:  { left: 495, top: 140, width: 440, height: 350, align: "TOP" },
     },
 
     // ヘッダー
     header: {
       title:        { left: 25, top: 30, width: 900, height: 60 },
-      subhead:      { left: 25, top: 90, width: 900, height: 40 },
+      subhead:      { left: 25, top: 90, width: 900, height: 40, align: "TOP" },
     },
 
     // --- 基準となる描画エリアと、描画エリアを基準とするスライド ---
     body: {
       area:         { left: 25, top: 130, width: 910, height: 360 },
       cards:        { left: 25, top: 190, width: 910, height: 300 },
-      table:        { left: 40, top: 160, width: 890, height: 330 },
+      table:        { left: 40, top: 160, width: 890, height: 330, headerColor: "bg_gray" },
     },
-
+      // --- 個別スライド、パーツ(insertShapeRelative)
       // -- 2列固定のスライド（body.cards 基準）
       compareSlide: {
-        head:         { left: 10, top: -40, width: 420, height: 40 },
-          body:         { left: 0, top: 40, widthR: 10/10, height: 240 },
+        head:         { left: 10, top: -40, width: 420, height: 40, color: "primary_color", border: "border" },
+          body:         { left: 0, top: 40, widthR: 10/10, height: 240, color: "bg_gray", border: "border" },
       },
       statsCompareSlide: {
-        title:        { left: 10, top: -40, width: 420, height: 40 },
+        title:        { left: 10, top: -40, width: 420, height: 40, color: "primary_color" },
           card:         { left: 0, top: 10, widthR: 10/10, height: 240, ratio: {W:1, H:4} },
             label:        { left: 0, topR: 1/10, widthR: 1/2, heightR: 2/10 },
       },
 
       // -- 縦横可変なカード系（基本は body.area 基準、diagramだけ body.cards 基準）
       diagramSlide: {
-        title:        { left: 10, top: -30, width: 420, height: 30 },
-          card:         { leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4} },
+        title:        { left: 10, top: -30, width: 420, height: 30, color: "bg_gray", border: "border" },
+          card:         { leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4}, color: "bg_white", border: "border" },
       },
 
       cards: {
@@ -119,33 +121,33 @@ const  SHAPE = {
       },
       headerCards: {
         card:         { left: 20, top: 20, width: 420, height: 280 },
-          head:         { left: 0, top: 0, widthR: 10/10, height: 40 },
-            body:         { left: 0, topR: 10/10, widthR: 10/10, height: 240 },
+          head:         { left: 0, top: 0, widthR: 10/10, height: 40, color: "primary_color", border: "border" },
+            body:         { left: 0, topR: 10/10, widthR: 10/10, height: 240, border: "border" },
       },
       kpiSlide: {
-        kpi:          { left: 20, top: 20, width: 420, height: 240 },
+        kpi:          { left: 20, top: 20, width: 420, height: 240, border: "border" },
           label:        { leftR: 1/20, topR: 1/20, widthR: 9/10, heightR: 4/20 },
           change:       { leftR: 1/20, topR: 15/20, widthR: 9/10, heightR: 4/20 },
       },
 
       // -- その他
       processSlide: {
-        numBox:       { left: 40, top: 40, width: 28, height: 28 },
+        numBox:       { left: 40, top: 40, width: 28, height: 28, color: "primary_color" },
         process:      { left: 80, top: 40, width: 800, height: 28 },
       },
       bulletCards: {
-        card:         { left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4} },
+        card:         { left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4}, color: "bg_gray", border: "border" },
       },
 
       quoteSlide: {
-        quoteMark:    { left: 20,  top: 60, width: 100, height: 100 },
+        quoteMark:    { left: 20,  top: 60, width: 100, height: 100, align: "TOP" },
         quoteText:    { left: 120, top: 80, width: 700, height: 150 },
         author:       { left: 150, top: 240, width: 700, height: 30 }
       },
       timelineSlide: {
-        dot:          { left: 60, top: 160, width: 10, height: 10, shapetype: "ELLIPSE" },
-          label:        { left: -50+5, top: -80, width: 100, height: 70 },
-          date:         { left: -50+5, top: 20, width: 100, height: 20 },
+        dot:          { left: 60, top: 160, width: 10, height: 10, shapetype: "ELLIPSE", color: "primary_color" },
+          label:        { left: -50+5, top: -80, width: 100, height: 70, align: "BOTTOM" },
+          date:         { left: -50+5, top: 20, width: 100, height: 20, align: "TOP" },
       },
 
 };
@@ -317,7 +319,7 @@ function createContentSlide(slide, data) {
   // 2列かもだけど、それぞれの列内でやることは同じ
   const isAgenda = CONFIG.AGENDA.regexp.test(data.title);
   for ( let content of contents ) {
-    const area = insertTextBox(slide, content.shape, {align: "TOP"});
+    const area = insertTextBox(slide, content.shape);
     const tr = setTextwStyle(area, content.text.join("\n"));
 
     // 箇条書き
@@ -362,8 +364,7 @@ function createCompareSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2つ
-  const headers = insertCards(slide, bodyCard, "compareSlide.head", 1, 2, 2, 
-    {color: CONFIG.COLORS.primary_color, border: CONFIG.COLORS.border});
+  const headers = insertCards(slide, bodyCard, "compareSlide.head", 1, 2, 2);
   
   let c=0;
   for ( let d of ["left", "right"] ) {
@@ -372,8 +373,7 @@ function createCompareSlide(slide, data) {
       {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
 
     // 内容（head を起点に）
-    const body = insertShapeRelative(slide, head, "compareSlide.body",
-      {color: CONFIG.COLORS.bg_gray, border: CONFIG.COLORS.border});
+    const body = insertShapeRelative(slide, head, "compareSlide.body");
     const tr = setTextwStyle(body, data[`${d}Items`].join("\n"))
 
     // 箇条書き
@@ -395,8 +395,7 @@ function createStatsCompareSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2つ
-  const headers = insertCards(slide, bodyCard, "statsCompareSlide.title", 1, 2, 2, 
-    {color: CONFIG.COLORS.primary_color});
+  const headers = insertCards(slide, bodyCard, "statsCompareSlide.title", 1, 2, 2);
   
   const length = data.stats.length;
   let c = 0;
@@ -460,8 +459,7 @@ function createDiagramSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2～5列
-  const headers = insertCards(slide, bodyCard, "diagramSlide.title", 1, cols, cols, 
-    {color: CONFIG.COLORS.bg_gray, border: CONFIG.COLORS.border});
+  const headers = insertCards(slide, bodyCard, "diagramSlide.title", 1, cols, cols);
   
   let c = 0;
   for ( let c=0 ; c<cols ; c++ ) {
@@ -475,14 +473,13 @@ function createDiagramSlide(slide, data) {
 
     // --- カード ---
     const rows = data.lanes[l].items.length;
-    const cards = insertCards(slide, bodyCard, "diagramSlide.card", rows, 1, rows,
-      {parent: headers[l], color: CONFIG.COLORS.bg_white, border: CONFIG.COLORS.border});
+    const cards = insertCards(slide, bodyCard, "diagramSlide.card", rows, 1, rows, {parent: headers[l]});
 
     // --- itemsを順に（縦・行 方向） ---
     let cs = [];
     for ( let r=0 ; r<rows ; r++ ) {
       const card = cards[r];
-      setTextwParam(card, data.lanes[l].items[r], {align: "CENTER"});
+      setTextwStyle(card, data.lanes[l].items[r], {align: "CENTER"});
 
       // カードを矢印でつなげる
       cs.push(card.getConnectionSites());
@@ -523,7 +520,7 @@ function createCardsSlide(slide, data) {
     for ( let c=0 ; c<cols ; c++ ) {
       const i = r*cols + c;
       if( i >= length ) { continue; }
-
+      
       setTextwStyle(cards[i], [
         `**${data.items[i].title}**`,
         data.items[i].desc
@@ -572,14 +569,12 @@ function createHeaderCardsSlide(slide, data) {
       const card = cards[i];
 
       // ヘッダー（card を起点に）
-      const head = insertShapeRelative(slide, card, "headerCards.DYNAMIC_HEAD",
-        {color: CONFIG.COLORS.primary_color, border: CONFIG.COLORS.border});
+      const head = insertShapeRelative(slide, card, "headerCards.DYNAMIC_HEAD");
       setTextwParam(head, data.items[i].title,
         {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
 
       // 内容（head を起点に）
-      const body = insertShapeRelative(slide, head, "headerCards.DYNAMIC_BODY",
-        {border: CONFIG.COLORS.border});
+      const body = insertShapeRelative(slide, head, "headerCards.DYNAMIC_BODY");
       setTextwStyle(body, data.items[i].desc, {align: "CENTER"});
 
       card.remove();
@@ -652,13 +647,11 @@ function createProcessSlide(slide, data) {
     // 番号
     // パディングは調整できないらしい、ので諦める
     // https://qiita.com/k-akie/items/5a1aac7a53586bc6ec72
-    const numBox = insertShapeRelative(slide, bodyArea, "processSlide.numBox",
-      {offsetH: margin*i, color: CONFIG.COLORS.primary_color}); // alpha: (i+1)/(length*2)+0.5});
+    const numBox = insertShapeRelative(slide, bodyArea, "processSlide.numBox", {offsetH: margin*i});
     setTextwParam(numBox, i+1, {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
 
     // プロセス
-    const process = insertShapeRelative(slide, bodyArea, "processSlide.process",
-      {offsetH: margin*i});
+    const process = insertShapeRelative(slide, bodyArea, "processSlide.process", {offsetH: margin*i});
     setTextwStyle(process, data.steps[i]);
 
     // プロセスを線でつなげる
@@ -687,8 +680,7 @@ function createBulletCardsSlide(slide, data) {
   const length = data.items.length;
 
   // --- cardsを作って、順に ---
-  const cards = insertCards(slide, bodyArea, "bulletCards.card", length, 1, length,
-    {color: CONFIG.COLORS.bg_gray, border: CONFIG.COLORS.border});
+  const cards = insertCards(slide, bodyArea, "bulletCards.card", length, 1, length);
 
   // --- Cardsを順に ---
   for ( let i=0 ; i<length ; i++ ) {
@@ -715,8 +707,7 @@ function createQuoteSlide(slide, data) {
   const bodyArea = insertTextBox(slide, "body.area");  // 相対位置のために一旦作成「最後に消す」
 
   // “（左ダブル引用符）
-  const markShpae = insertShapeRelative(slide, bodyArea, "quoteSlide.quoteMark",
-    {align: "TOP"});
+  const markShpae = insertShapeRelative(slide, bodyArea, "quoteSlide.quoteMark");
   setTextwParam(markShpae, "“",
     {color: CONFIG.COLORS.ghost_gray, size: CONFIG.FONT_SIZES.ghostNum, bold: true});
 
@@ -748,16 +739,15 @@ function createTimelineSlide(slide, data) {
   let cs = [];
   for ( let m=0 ; m<length ; m++ ) {
     // ドット
-    const dot = insertShapeRelative(slide, bodyArea, "timelineSlide.dot",
-      {offsetW: margin*m, color: CONFIG.COLORS.primary_color, alpha: (m+1)/length});
+    const dot = insertShapeRelative(slide, bodyArea, "timelineSlide.dot", {offsetW: margin*m, alpha: (m+1)/length});
 
     // ラベル（dot を起点に）
-    const label = insertShapeRelative(slide, dot, "timelineSlide.label", {align: "BOTTOM"});
+    const label = insertShapeRelative(slide, dot, "timelineSlide.label");
     setTextwParam(label, data.milestones[m]["label"],
       {size: CONFIG.FONT_SIZES.small, bold: true, align: "CENTER"})
 
     // 日付（dot を起点に）
-    const date = insertShapeRelative(slide, dot, "timelineSlide.date", {align: "TOP"});
+    const date = insertShapeRelative(slide, dot, "timelineSlide.date");
     setTextwParam(date, data.milestones[m]["date"],
       {size: CONFIG.FONT_SIZES.small, color: CONFIG.COLORS.neutral_gray, align: "CENTER"})
 
@@ -784,15 +774,17 @@ function createTableSlide(slide, data) {
 
   // テーブル
   const cols = data.headers.length;
-  const rows = data.rows.length; // ヘッダー分
-  const table = insertTable(slide, "body.table", {rows: rows+1, cols: cols});
+  const rows = data.rows.length;
+  const spec = _spec("body.table");
+  const table = insertTable(slide, spec, {rows: rows+1, cols: cols});
 
   // ヘッダー
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
-    cell
-      .setContentAlignment(SlidesApp.ContentAlignment.MIDDLE)
-      .getFill().setSolidFill(CONFIG.COLORS.bg_gray);
+    cell.setContentAlignment(SlidesApp.ContentAlignment[spec.align || SHAPE.BASE.align]);
+    const headerColor = CONFIG.COLORS[spec.headerColor] || spec.headerColor;
+    if (headerColor) { cell.getFill().setSolidFill(headerColor); }
+
     setTextwParam(cell, data.headers[c],
       {bold: true, align: "CENTER"});
   }
@@ -801,8 +793,7 @@ function createTableSlide(slide, data) {
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
       const cell = table.getCell(r+1, c);
-      cell
-        .setContentAlignment(SlidesApp.ContentAlignment.MIDDLE)
+      cell.setContentAlignment(SlidesApp.ContentAlignment[spec.align || SHAPE.BASE.align]);
       setTextwStyle(cell, data.rows[r][c],
         {align: "CENTER"});
     }
@@ -837,7 +828,7 @@ function drawHeader(slide, title) {
 
 // サブヘッダー
 function drawSubHeader(slide, subhead) {
-  const subheadShape = insertTextBox(slide, "header.subhead", {align: "TOP"});
+  const subheadShape = insertTextBox(slide, "header.subhead");
   setTextwStyle(subheadShape, subhead,
     {size: CONFIG.FONT_SIZES.subhead});
 }
@@ -867,10 +858,11 @@ function deepMerge(target, source) {
  * @param {string} [args.align="MIDDLE"] - テキストの垂直方向の配置（'TOP', 'MIDDLE', 'BOTTOM'）。
  * @returns {GoogleAppsScript.Slides.Shape} - 作成されたテキストボックスのShapeオブジェクト。
  */
-function insertTextBox(slide, shape, args={
-  align: "MIDDLE"}) {
+function insertTextBox(slide, shape, args={}) {
   
   const spec = _spec(shape);
+  const finalArgs = { ...spec, ...args };
+
   const spec_width = spec.widthR ? spec.widthR * SHAPE.BASE.width : spec.width;
   const spec_height = spec.heightR ? spec.heightR * SHAPE.BASE.height : spec.height;
 
@@ -891,7 +883,7 @@ function insertTextBox(slide, shape, args={
   // アライメント設定（上下）
   // https://developers.google.com/apps-script/reference/slides/shape?hl=ja#setContentAlignment(ContentAlignment)
   // https://developers.google.com/apps-script/reference/slides/content-alignment?hl=ja
-  box.setContentAlignment(SlidesApp.ContentAlignment[args.align || "MIDDLE"]);
+  box.setContentAlignment(SlidesApp.ContentAlignment[finalArgs.align || SHAPE.BASE.align]);
 
   return box;
 }
@@ -912,27 +904,36 @@ function insertTextBox(slide, shape, args={
  * @param {string} [args.shapetype="TEXT_BOX"] - 挿入する図形の種類 (例: 'ROUND_RECTANGLE')。
  * @returns {GoogleAppsScript.Slides.Shape} 作成された図形のShapeオブジェクト。
  */
-function insertShapeRelative(slide, parent, shape, args={
-  offsetW: 0, offsetH: 0, align: "MIDDLE", color: undefined, alpha: 1, border: undefined, shapetype: "TEXT_BOX"}) {
+function insertShapeRelative(slide, parent, shape, args={}) {
 
   const par = _object(parent);
   const spec = _spec(shape);
+  const finalArgs = { ...spec, ...args };
 
-  const offsetW = args.offsetW || 0;
-  const offsetH = args.offsetH || 0;
+  const offsetW = finalArgs.offsetW || 0;
+  const offsetH = finalArgs.offsetH || 0;
 
   const box = slide.insertShape(
-    SlidesApp.ShapeType[spec.shapetype || "TEXT_BOX"],
+    SlidesApp.ShapeType[finalArgs.shapetype || SHAPE.BASE.shapetype],
     SCALE.W * ((spec.leftR   ? spec.leftR * par.width : spec.left) + offsetW + par.left),
     SCALE.H * ((spec.topR    ? spec.topR  * par.height : spec.top) + offsetH + par.top),
     SCALE.W * (spec.widthR   ? spec.widthR  * par.width  : spec.width),
     SCALE.H * (spec.heightR  ? spec.heightR * par.height : spec.height)
   );
 
-  box.setContentAlignment(SlidesApp.ContentAlignment[args.align || "MIDDLE"]);
-  // alpha は 0 が有効な値なので || ではなく ?? (Null合体演算子) を使用
-  if (args.color) { box.getFill().setSolidFill(args.color, args.alpha ?? 1); }
-  if (args.border) { box.getBorder().getLineFill().setSolidFill(args.border); }
+  box.setContentAlignment(SlidesApp.ContentAlignment[finalArgs.align || SHAPE.BASE.align]);
+
+  // 色の適用（キー名 or カラーコード）
+  const fillColor = CONFIG.COLORS[finalArgs.color] || finalArgs.color;
+  if (fillColor) {
+    // alpha は 0 が有効な値なので || ではなく ?? (Null合体演算子) を使用
+    box.getFill().setSolidFill(fillColor, finalArgs.alpha ?? 1);
+  }
+
+  const borderColor = CONFIG.COLORS[finalArgs.border] || finalArgs.border;
+  if (borderColor) {
+    box.getBorder().getLineFill().setSolidFill(borderColor);
+  }
 
   return box;
 }
@@ -952,9 +953,7 @@ function insertShapeRelative(slide, parent, shape, args={
  * @param {number} length - 挿入するカードの総数。
  * @param {Object} [args] - 図形の追加設定を行うオプションオブジェクト。
  * @returns {Array<GoogleAppsScript.Slides.Shape>} - 作成されたカードのShapeオブジェクトの配列。
- */
-function insertCards(slide, area, shape, rows, cols, length, args={
-  parent: undefined, color: CONFIG.COLORS.bg_white, border: CONFIG.COLORS.border }) {
+ */function insertCards(slide, area, shape, rows, cols, length, args={}) {
   // 幅と高さの「最小単位」
   const unit = getUnit(area, shape, rows, cols);
 
@@ -970,7 +969,8 @@ function insertCards(slide, area, shape, rows, cols, length, args={
   };
 
   // --- cardを動的に配置 ---
-  const parent = args.parent || area;
+  const finalArgs = { ...SHAPE[type].DYNAMIC_CARD, ...args };
+  const parent = finalArgs.parent || area;
 
   let cards = [];
   for ( let r=0 ; r<rows ; r++ ) {
@@ -979,9 +979,9 @@ function insertCards(slide, area, shape, rows, cols, length, args={
       if( i >= length ) { continue; }
 
       // card
-      args.offsetW = unit.W*c*(unit.ratio.W+1);
-      args.offsetH = unit.H*r*(unit.ratio.H+1) + (args.parent ? (_object(area).top - _object(parent).top) : 0);
-      const card = insertShapeRelative(slide, parent, `${type}.DYNAMIC_CARD`, args);
+      finalArgs.offsetW = unit.W*c*(unit.ratio.W+1);
+      finalArgs.offsetH = unit.H*r*(unit.ratio.H+1) + (finalArgs.parent ? (_object(area).top - _object(parent).top) : 0);
+      const card = insertShapeRelative(slide, parent, `${type}.DYNAMIC_CARD`, finalArgs);
 
       cards.push(card);
     }
@@ -991,10 +991,8 @@ function insertCards(slide, area, shape, rows, cols, length, args={
 }
 
 // テーブル設置（スライドに対して）
-function insertTable(slide, shape, args={
+function insertTable(slide, spec, args={
   rows: 3, cols: 3 }) {
-
-  const spec = _spec(shape);
 
   // テーブルの挿入(→Table)
   // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#inserttablenumrows,-numcolumns,-left,-top,-width,-height
