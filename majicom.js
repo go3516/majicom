@@ -62,9 +62,7 @@ const  SHAPE = {
   BASE: {
     width:  960,
     height: 540,
-    ratio: {W:10, H:8},
-    align: "MIDDLE",
-    shapetype: "TEXT_BOX",
+    shape: { shapetype: "TEXT_BOX", align: "MIDDLE", ratio: {W:10, H:8} },
     text: { color: "text_primary", size: "body", bold: false, align: "START" },
   },
 
@@ -135,7 +133,7 @@ const  SHAPE = {
       },
       headerCards: {
         card:         { left: 20, top: 20, width: 420, height: 280 },
-          head:         { left: 0, top: 0, widthR: 10/10, height: 40, color: "primary_color", border: "border",
+          head:         { left: 0, top: 0, widthR: 10/10, height: 40, color: "primary_color", border: "primary_color",
                     text: { color: "text_reverse", bold: true, align: "CENTER" } },
             body:         { left: 0, topR: 10/10, widthR: 10/10, height: 240, border: "border",
                       text: { align: "CENTER" } },
@@ -836,7 +834,7 @@ function createTableSlide(slide, data) {
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
     cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.align]);
-    const headerColor = CONFIG.COLORS[header.color] || header.color;
+    const headerColor = CONFIG.COLORS[header.color];
     if (headerColor) { cell.getFill().setSolidFill(headerColor); }
 
     setTextwSpec(cell, shape, data.headers[c]);
@@ -915,9 +913,9 @@ function deepMerge(target, source) {
  * @returns {GoogleAppsScript.Slides.Shape} - 作成されたテキストボックスのShapeオブジェクト。
  */
 function insertTextBox(slide, shape, args={}) {
-  
+  const base = _spec("BASE.shape");
   const spec = _spec(shape);
-  const finalArgs = { ...spec, ...args };
+  const effective = { ...base, ...spec, ...args };
 
   const spec_width = spec.widthR ? spec.widthR * SHAPE.BASE.width : spec.width;
   const spec_height = spec.heightR ? spec.heightR * SHAPE.BASE.height : spec.height;
@@ -928,7 +926,7 @@ function insertTextBox(slide, shape, args={}) {
   // 図形の挿入(→Shape)
   // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertShape(ShapeType,Number,Number,Number,Number)
   const box = slide.insertShape(
-    SlidesApp.ShapeType.TEXT_BOX,
+    SlidesApp.ShapeType[effective.shapetype],
     // 先に centerW, centerH があったら、を判断(?)
     SCALE.W * (spec.leftR ? spec.leftR * SHAPE.BASE.width  - centerW : spec.left),
     SCALE.H * (spec.topR  ? spec.topR  * SHAPE.BASE.height - centerH : spec.top),
@@ -939,7 +937,7 @@ function insertTextBox(slide, shape, args={}) {
   // アライメント設定（上下）
   // https://developers.google.com/apps-script/reference/slides/shape?hl=ja#setContentAlignment(ContentAlignment)
   // https://developers.google.com/apps-script/reference/slides/content-alignment?hl=ja
-  box.setContentAlignment(SlidesApp.ContentAlignment[finalArgs.align || SHAPE.BASE.align]);
+  box.setContentAlignment(SlidesApp.ContentAlignment[effective.align]);
 
   return box;
 }
@@ -961,32 +959,32 @@ function insertTextBox(slide, shape, args={}) {
  * @returns {GoogleAppsScript.Slides.Shape} 作成された図形のShapeオブジェクト。
  */
 function insertShapeRelative(slide, parent, shape, args={}) {
+  const base = _spec("BASE.shape");
+  const spec = _spec(shape);
+  const effective = { ...base, ...spec, ...args };
 
   const par = _object(parent);
-  const spec = _spec(shape);
-  const finalArgs = { ...spec, ...args };
-
-  const offsetW = finalArgs.offsetW || 0;
-  const offsetH = finalArgs.offsetH || 0;
+  const offsetW = effective.offsetW || 0;
+  const offsetH = effective.offsetH || 0;
 
   const box = slide.insertShape(
-    SlidesApp.ShapeType[finalArgs.shapetype || SHAPE.BASE.shapetype],
+    SlidesApp.ShapeType[effective.shapetype],
     SCALE.W * ((spec.leftR   ? spec.leftR * par.width : spec.left) + offsetW + par.left),
     SCALE.H * ((spec.topR    ? spec.topR  * par.height : spec.top) + offsetH + par.top),
     SCALE.W * (spec.widthR   ? spec.widthR  * par.width  : spec.width),
     SCALE.H * (spec.heightR  ? spec.heightR * par.height : spec.height)
   );
 
-  box.setContentAlignment(SlidesApp.ContentAlignment[finalArgs.align || SHAPE.BASE.align]);
+  box.setContentAlignment(SlidesApp.ContentAlignment[effective.align]);
 
-  // 色の適用（キー名 or カラーコード）
-  const fillColor = CONFIG.COLORS[finalArgs.color] || finalArgs.color;
+  // 色の適用（キー名）
+  const fillColor = CONFIG.COLORS[effective.color];
   if (fillColor) {
     // alpha は 0 が有効な値なので || ではなく ?? (Null合体演算子) を使用
-    box.getFill().setSolidFill(fillColor, finalArgs.alpha ?? 1);
+    box.getFill().setSolidFill(fillColor, effective.alpha ?? 1);
   }
 
-  const borderColor = CONFIG.COLORS[finalArgs.border] || finalArgs.border;
+  const borderColor = CONFIG.COLORS[effective.border];
   if (borderColor) {
     box.getBorder().getLineFill().setSolidFill(borderColor);
   }
@@ -1026,8 +1024,8 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
   };
 
   // --- cardを動的に配置 ---
-  const finalArgs = { ...SHAPE[type].DYNAMIC_CARD, ...args };
-  const parent = finalArgs.parent || area;
+  const effective = { ...SHAPE[type].DYNAMIC_CARD, ...args };
+  const parent = effective.parent || area;
 
   let cards = [];
   for ( let r=0 ; r<rows ; r++ ) {
@@ -1036,9 +1034,9 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
       if( i >= length ) { continue; }
 
       // card
-      finalArgs.offsetW = unit.W*c*(unit.ratio.W+1);
-      finalArgs.offsetH = unit.H*r*(unit.ratio.H+1) + (finalArgs.parent ? (_object(area).top - _object(parent).top) : 0);
-      const card = insertShapeRelative(slide, parent, `${type}.DYNAMIC_CARD`, finalArgs);
+      effective.offsetW = unit.W*c*(unit.ratio.W+1);
+      effective.offsetH = unit.H*r*(unit.ratio.H+1) + (effective.parent ? (_object(area).top - _object(parent).top) : 0);
+      const card = insertShapeRelative(slide, parent, `${type}.DYNAMIC_CARD`, effective);
 
       cards.push(card);
     }
@@ -1048,8 +1046,7 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
 }
 
 // テーブル設置（スライドに対して）
-function insertTable(slide, shape, args={
-  rows: 3, cols: 3 }) {
+function insertTable(slide, shape, args={ rows: 3, cols: 3 }) {
 
   // テーブルの挿入(→Table)
   const spec = _spec(shape);
@@ -1116,8 +1113,8 @@ function setTextwSpec(target, shape, text, args={}) {
  * @param {string} shape - SHAPEオブジェクト内の図形（うちテキストのスタイル定義を利用）へのパス文字列。
  * @param {string} text - スタイルマークアップを含むテキストコンテンツ。
  * @param {Object} [args] - 基本となるスタイル設定のオプションオブジェクト。
- * @param {string} [args.color=CONFIG.COLORS.text_primary] - デフォルトのテキストの色。
- * @param {number} [args.size=CONFIG.FONT_SIZES.body] - デフォルトのフォントサイズ（ポイント）。
+ * @param {string} [args.color="text_primary"] - デフォルトのテキストの色。
+ * @param {number} [args.size="body"] - デフォルトのフォントサイズ（ポイント）。
  * @param {string} [args.align="START"] - 段落の水平方向の配置 ('START', 'CENTER', 'END', 'JUSTIFY')。
  * @returns {GoogleAppsScript.Slides.TextRange} - スタイル適用後のTextRangeオブジェクト。
  */
@@ -1236,7 +1233,7 @@ function setSpacing(textRange, type) {
 function getUnit(parent, shape, rows, cols) {
   const par = _object(parent);
   const spec = _spec(shape);
-  const ratio = spec.ratio || SHAPE.BASE.ratio;
+  const ratio = spec.ratio || SHAPE.BASE.shape.ratio;
 
   // 幅
   const unitW = Math.round(Math.min(
