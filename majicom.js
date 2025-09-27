@@ -1066,7 +1066,7 @@ function insertTable(slide, shape, args={
 function setTextwSpec(target, shape, text, args={}) {
   const base = _spec("BASE.text");
   const spec = _spec(shape);
-  const allSpec = { ...base, ...spec.text, ...args };
+  const effective = { ...base, ...spec.text, ...args };
 
   // テキストコンテンツ取得(→TextRange)
   // https://developers.google.com/apps-script/reference/slides/shape?hl=ja#getText()
@@ -1079,14 +1079,14 @@ function setTextwSpec(target, shape, text, args={}) {
     // https://developers.google.com/apps-script/reference/slides/text-range?hl=ja#getTextStyle()
     .getTextStyle()
       .setFontFamily(CONFIG.FONTS.family)
-      .setForegroundColor(CONFIG.COLORS[allSpec.color] || CONFIG.COLORS["text_primary"])
-      .setFontSize(CONFIG.FONT_SIZES[allSpec.size])
-      .setBold(allSpec.bold);
+      .setForegroundColor(CONFIG.COLORS[effective.color] || CONFIG.COLORS["text_primary"])
+      .setFontSize(CONFIG.FONT_SIZES[effective.size])
+      .setBold(effective.bold);
 
   // アライメント設定（左右）
   // https://developers.google.com/apps-script/reference/slides/paragraph-style?hl=ja#setparagraphalignmentalignment
   // https://developers.google.com/apps-script/reference/slides/paragraph-alignment?hl=ja
-  textRange.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment[allSpec.align]);
+  textRange.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment[effective.align]);
 
   return textRange;
 }
