@@ -177,9 +177,9 @@ const  SHAPE = {
       },
       tableSlide: {
         table:        { left: 40, top: 160, width: 890, height: 330 },
-          header:       { color: "bg_gray",
+          header:       { align: "MIDDLE", color: "bg_gray",
                     text: { bold: true, align: "CENTER" } },
-          cells:       { align: "MIDDLE",
+          cells:        { align: "MIDDLE",
                     text: { align: "CENTER" } },
       }
 
@@ -839,7 +839,7 @@ function createTableSlide(slide, data) {
 
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
-    cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.align]);
+    cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.shape.align]);
     const headerColor = CONFIG.COLORS[header.color];
     if (headerColor) { cell.getFill().setSolidFill(headerColor); }
 
@@ -853,7 +853,7 @@ function createTableSlide(slide, data) {
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
       const cell = table.getCell(r+1, c);
-      cell.setContentAlignment(SlidesApp.ContentAlignment[cells.align || SHAPE.BASE.align]);
+      cell.setContentAlignment(SlidesApp.ContentAlignment[cells.align || SHAPE.BASE.shape.align]);
       setStyledText(cell, shape, data.rows[r][c]);
     }
   }
@@ -1078,8 +1078,8 @@ function insertTable(slide, shape, args={ rows: 3, cols: 3 }) {
  * @param {string} shape - SHAPEオブジェクト内の図形（うちテキストのスタイル定義を利用）へのパス文字列。
  * @param {string} text - 設定するテキストコンテンツ。
  * @param {Object} [args] - スタイル設定を行うオプションオブジェクト。
- * @param {string} [args.color=CONFIG.COLORS.text_primary] - テキストの色。
- * @param {number} [args.size=CONFIG.FONT_SIZES.body] - フォントサイズ（ポイント）。
+ * @param {string} [args.color="text_primary"] - テキストの色。
+ * @param {number} [args.size="body"] - フォントサイズ（ポイント）。
  * @param {boolean} [args.bold=false] - テキストを太字にするかどうか。
  * @param {string} [args.align="START"] - 段落の水平方向の配置 ('START', 'CENTER', 'END', 'JUSTIFY')。
  * @returns {GoogleAppsScript.Slides.TextRange} - スタイル適用後のTextRangeオブジェクト。
@@ -1169,7 +1169,7 @@ function _parseTextStyle(text) {
   output = t2.replace(/\[{2}([^\]]+)\]{2}/g, (match, content, index) => {
     const start = index - offset;
     const end = start + content.length;
-    ranges.push({ start, end, bold: true, color: CONFIG.COLORS.primary_color });
+    ranges.push({ start, end, bold: true, color: "primary_color" });
     offset += match.length - content.length;
     return content;
   });
@@ -1184,7 +1184,7 @@ function _applyTextStyle(textRange, ranges) {
     if (!part) return;
     part.getTextStyle()
       .setBold(!!r.bold)
-      .setForegroundColor(r.color || CONFIG.COLORS.text_primary);
+      .setForegroundColor(CONFIG.COLORS[r.color || "text_primary"]);
   }
 }
 
