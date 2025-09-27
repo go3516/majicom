@@ -65,19 +65,25 @@ const  SHAPE = {
     ratio: {W:10, H:8},
     align: "MIDDLE",
     shapetype: "TEXT_BOX",
+    text: { color: "text_primary", size: "body", bold: false, align: "START" },
   },
 
   // --- 基本スライド、パーツ(insertTextBox)
     titleSlide: {
-      title:        { left: 50,  top: 200, width: 830, height: 90, centerH: true},
-      date:         { left: 50,  top: 450, width: 250, height: 40 },
+      title:        { left: 50,  top: 200, width: 830, height: 90, centerH: true ,
+                text: { color: "text_title", size: "title", bold: true } },
+      date:         { left: 50,  top: 450, width: 250, height: 40 ,
+                text: { color: "text_title", size: "date" } },
     },
     sectionSlide: {
-      title:        { leftR: 1/4, top: 230, widthR: 2/3, height: 80 },
-      ghostNum:     { left: 35, top: 120, width: 400, height: 200 },
+      ghostNum:     { left: 35, top: 120, width: 400, height: 200 ,
+                text: { color: "ghost_gray", size: "ghostNum", bold: true } },
+      title:        { leftR: 1/4, top: 230, widthR: 2/3, height: 80 ,
+                text: { color: "text_section", size: "sectionTitle", bold: true } },
     },
     closingSlide: {
-      message:      { leftR: 1/2,  topR: 1/2, widthR: 2/3, height: 90 ,centerW: true, centerH: true},
+      message:      { leftR: 1/2,  topR: 1/2, widthR: 2/3, height: 90 ,centerW: true, centerH: true,
+                text: { color: "text_closing", size: "title", bold: true, align: "CENTER" } },
     },
 
     contentSlide: {   // FAQも contentSlide.boy 利用
@@ -88,7 +94,8 @@ const  SHAPE = {
 
     // ヘッダー
     header: {
-      title:        { left: 25, top: 30, width: 900, height: 60 },
+      title:        { left: 25, top: 30, width: 900, height: 60,
+                text: { size: "header", bold: true } },
       subhead:      { left: 25, top: 90, width: 900, height: 40, align: "TOP" },
     },
 
@@ -96,23 +103,26 @@ const  SHAPE = {
     body: {
       area:         { left: 25, top: 130, width: 910, height: 360 },
       cards:        { left: 25, top: 190, width: 910, height: 300 },
-      table:        { left: 40, top: 160, width: 890, height: 330, headerColor: "bg_gray" },
     },
       // --- 個別スライド、パーツ(insertShapeRelative)
       // -- 2列固定のスライド（body.cards 基準）
       compareSlide: {
-        head:         { left: 10, top: -40, width: 420, height: 40, color: "primary_color", border: "border" },
+        head:         { left: 10, top: -40, width: 420, height: 40, color: "primary_color", border: "border",
+                  text: { color: "text_reverse", bold: true, align: "CENTER" } },
           body:         { left: 0, top: 40, widthR: 10/10, height: 240, color: "bg_gray", border: "border" },
       },
       statsCompareSlide: {
-        title:        { left: 10, top: -40, width: 420, height: 40, color: "primary_color" },
-          card:         { left: 0, top: 10, widthR: 10/10, height: 240, ratio: {W:1, H:4} },
+        title:        { left: 10, top: -40, width: 420, height: 40, color: "primary_color",
+                  text: { color: "text_reverse", bold: true, align: "CENTER" } },
+          card:         { left: 0, top: 10, widthR: 10/10, height: 240, ratio: {W:1, H:4},
+                    text: { size: "compare", bold: true, align: "CENTER" } },
             label:        { left: 0, topR: 1/10, widthR: 1/2, heightR: 2/10 },
       },
 
       // -- 縦横可変なカード系（基本は body.area 基準、diagramだけ body.cards 基準）
       diagramSlide: {
-        title:        { left: 10, top: -30, width: 420, height: 30, color: "bg_gray", border: "border" },
+        title:        { left: 10, top: -30, width: 420, height: 30, color: "bg_gray", border: "border",
+                  text: { bold: true, align: "CENTER" } },
           card:         { leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4}, color: "bg_white", border: "border" },
       },
 
@@ -121,18 +131,23 @@ const  SHAPE = {
       },
       headerCards: {
         card:         { left: 20, top: 20, width: 420, height: 280 },
-          head:         { left: 0, top: 0, widthR: 10/10, height: 40, color: "primary_color", border: "border" },
+          head:         { left: 0, top: 0, widthR: 10/10, height: 40, color: "primary_color", border: "border",
+                    text: { color: "text_reverse", bold: true, align: "CENTER" } },
             body:         { left: 0, topR: 10/10, widthR: 10/10, height: 240, border: "border" },
       },
       kpiSlide: {
-        kpi:          { left: 20, top: 20, width: 420, height: 240, border: "border" },
-          label:        { leftR: 1/20, topR: 1/20, widthR: 9/10, heightR: 4/20 },
-          change:       { leftR: 1/20, topR: 15/20, widthR: 9/10, heightR: 4/20 },
+        kpi:          { left: 20, top: 20, width: 420, height: 240, border: "border",
+                  text: { size: "kpi", bold: true, align: "CENTER" } },
+          label:        { leftR: 1/20, topR: 1/20, widthR: 9/10, heightR: 4/20,
+                    text: { color: "neutral_gray", align: "START" } },
+          change:       { leftR: 1/20, topR: 15/20, widthR: 9/10, heightR: 4/20,
+                    text: { align: "END" } }, 
       },
 
       // -- その他
       processSlide: {
-        numBox:       { left: 40, top: 40, width: 28, height: 28, color: "primary_color" },
+        numBox:       { left: 40, top: 40, width: 28, height: 28, color: "primary_color",
+                  text: { color: "text_reverse", bold: true, align: "CENTER" } },
         process:      { left: 80, top: 40, width: 800, height: 28 },
       },
       bulletCards: {
@@ -140,15 +155,25 @@ const  SHAPE = {
       },
 
       quoteSlide: {
-        quoteMark:    { left: 20,  top: 60, width: 100, height: 100, align: "TOP" },
+        quoteMark:    { left: 20,  top: 60, width: 100, height: 100, align: "TOP",
+                  text: { color: "ghost_gray", size: "ghostNum", bold: true } },
         quoteText:    { left: 120, top: 80, width: 700, height: 150 },
         author:       { left: 150, top: 240, width: 700, height: 30 }
       },
       timelineSlide: {
         dot:          { left: 60, top: 160, width: 10, height: 10, shapetype: "ELLIPSE", color: "primary_color" },
-          label:        { left: -50+5, top: -80, width: 100, height: 70, align: "BOTTOM" },
-          date:         { left: -50+5, top: 20, width: 100, height: 20, align: "TOP" },
+          label:        { left: -50+5, top: -80, width: 100, height: 70, align: "BOTTOM",
+                    text: { size: "small", bold: true, align: "CENTER" } },
+          date:         { left: -50+5, top: 20, width: 100, height: 20, align: "TOP",
+                    text: { size: "small", color: "neutral_gray", align: "CENTER" } },
       },
+      tableSlide: {
+        table:        { left: 40, top: 160, width: 890, height: 330 },
+          header:       { color: "bg_gray",
+                    text: { bold: true, align: "CENTER" } },
+          cells:       { align: "MIDDLE",
+                    text: { align: "CENTER" } },
+      }
 
 };
 
@@ -249,39 +274,41 @@ function createPresentation(sd, conf, shape) {
 // --- 基本スライド ---
 // title
 function createTitleSlide(slide, data) {
+  let shape;
   // タイトル
-  const titleShape = insertTextBox(slide, "titleSlide.title");
-  setTextwParam(titleShape, data.title,
-    {color: CONFIG.COLORS.text_title, size: CONFIG.FONT_SIZES.title, bold: true});
+  shape = "titleSlide.title";
+  const titleShape = insertTextBox(slide, shape);
+  setTextwSpec(titleShape, shape, data.title);
 
   // 日付
-  const dateShape = insertTextBox(slide, "titleSlide.date");
-  setTextwParam(dateShape, data.date || Utilities.formatDate(new Date(), "JST", "yyyy.MM.dd"),
-    {color: CONFIG.COLORS.text_title, size: CONFIG.FONT_SIZES.date});
+  shape = "titleSlide.date";
+  const dateShape = insertTextBox(slide, shape);
+  setTextwSpec(dateShape, shape, data.date || Utilities.formatDate(new Date(), "JST", "yyyy.MM.dd"));
 
 }
 
 // section
 function createSectionSlide(slide, data) {
+  let shape;
   // セクション番号
   SECTION_COUNTER++;
-  const numberShape = insertTextBox(slide, "sectionSlide.ghostNum");
-  setTextwParam(numberShape, String(SECTION_COUNTER).padStart(2, "0"),
-    {color: CONFIG.COLORS.ghost_gray, size: CONFIG.FONT_SIZES.ghostNum, bold: true});
-
+  shape = "sectionSlide.ghostNum";
+  const numberShape = insertTextBox(slide, shape);
+  setTextwSpec(numberShape, shape, String(SECTION_COUNTER).padStart(2, "0"));
+ 
   // タイトル
-  const sectionShape = insertTextBox(slide, "sectionSlide.title");
-  setTextwParam(sectionShape, data.title,
-    {color: CONFIG.COLORS.text_section, size: CONFIG.FONT_SIZES.sectionTitle, bold: true});
+  shape = "sectionSlide.title";
+  const sectionShape = insertTextBox(slide, shape);
+  setTextwSpec(sectionShape, shape, data.title);
 
 }
 
 // closing
 function createClosingSlide(slide, data) {
   // メッセージ
-  const closingShape = insertTextBox(slide, "closingSlide.message");
-  setTextwParam(closingShape, CONFIG.CLOSING.message,
-    {color: CONFIG.COLORS.text_closing, size: CONFIG.FONT_SIZES.title, bold: true, align: "CENTER"});
+  let shape = "closingSlide.message";
+  const closingShape = insertTextBox(slide, shape);
+  setTextwSpec(closingShape, shape, CONFIG.CLOSING.message);
 
 }
 
@@ -364,13 +391,13 @@ function createCompareSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2つ
-  const headers = insertCards(slide, bodyCard, "compareSlide.head", 1, 2, 2);
+  let shape = "compareSlide.head";
+  const headers = insertCards(slide, bodyCard, shape, 1, 2, 2);
   
   let c=0;
   for ( let d of ["left", "right"] ) {
     const head = headers[c++];
-    setTextwParam(head, data[`${d}Title`],
-      {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
+    setTextwSpec(head, shape, data[`${d}Title`]);
 
     // 内容（head を起点に）
     const body = insertShapeRelative(slide, head, "compareSlide.body");
@@ -386,6 +413,7 @@ function createCompareSlide(slide, data) {
 
 // statsCompare
 function createStatsCompareSlide(slide, data) {
+  let shape;
   // ヘッダー
   drawHeader(slide, data.title);
   drawSubHeader(slide, data.subhead);
@@ -395,25 +423,24 @@ function createStatsCompareSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2つ
-  const headers = insertCards(slide, bodyCard, "statsCompareSlide.title", 1, 2, 2);
+  shape = "statsCompareSlide.title";
+  const headers = insertCards(slide, bodyCard, shape, 1, 2, 2);
   
   const length = data.stats.length;
   let c = 0;
   for ( let d of ["left", "right"] ) {
-    setTextwParam(headers[c++], data[`${d}Title`] ,
-      {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
+    setTextwSpec(headers[c++], shape, data[`${d}Title`]);
   }
 
-  // --- 「左側」 ---
-  // cardL を作って、statsを順に ---
-  const cardL = insertCards(slide, bodyCard, "statsCompareSlide.card", length, 1, length, {parent: headers[0]});
+  // --- 左右のカード ---
+  shape = "statsCompareSlide.card";
+  // --- 左側
+  const cardL = insertCards(slide, bodyCard, shape, length, 1, length, {parent: headers[0]});
   for ( let r=0 ; r<length ; r++ ) {
     // カード（headers を起点・参考に）
     const card = cardL[r];
     card.getBorder().setTransparent();
-
-    setTextwParam(card, data.stats[r].leftValue,
-      {size: CONFIG.FONT_SIZES.compare, bold: true, align: "CENTER"});
+    setTextwSpec(card, shape, data.stats[r].leftValue);
 
     // ラベル（card を起点に）
     const body = insertShapeRelative(slide, card, "statsCompareSlide.label");
@@ -422,21 +449,20 @@ function createStatsCompareSlide(slide, data) {
 
   }
 
-  // --- 「右側」 ---
+  // --- 右側
   const trend = {
     "up"    : "↗",
     "down"  : "↘",
   }
   // cardR を作って、statsを順に ---
-  const cardR = insertCards(slide, bodyCard, "statsCompareSlide.card", length, 1, length, {parent: headers[1]});
+  const cardR = insertCards(slide, bodyCard, shape, length, 1, length, {parent: headers[1]});
   for ( let r=0 ; r<length ; r++ ) {
     // カード（headers を起点・参考に）
     const card = cardR[r];
     card.getBorder().setTransparent();
 
     const text = data.stats[r].rightValue + (trend[data.stats[r]["trend"]] || "");
-    setTextwParam(card, text,
-      {size: CONFIG.FONT_SIZES.compare, bold: true, align: "CENTER", color: CONFIG.COLORS.primary_color});
+    setTextwSpec(card, shape, text, {color: "primary_color"});
 
   }
 
@@ -459,12 +485,12 @@ function createDiagramSlide(slide, data) {
 
   // --- タイトル ---
   // head(ers)（動的に）横に2～5列
-  const headers = insertCards(slide, bodyCard, "diagramSlide.title", 1, cols, cols);
+  let shape = "diagramSlide.title";
+  const headers = insertCards(slide, bodyCard, shape, 1, cols, cols);
   
   let c = 0;
   for ( let c=0 ; c<cols ; c++ ) {
-    setTextwParam(headers[c], data.lanes[c].title || " ",
-      {bold: true, align: "CENTER"});
+    setTextwSpec(headers[c], shape, data.lanes[c].title || " ");
   }
 
   // --- laneを順に（横・列 方向） ---
@@ -570,8 +596,7 @@ function createHeaderCardsSlide(slide, data) {
 
       // ヘッダー（card を起点に）
       const head = insertShapeRelative(slide, card, "headerCards.DYNAMIC_HEAD");
-      setTextwParam(head, data.items[i].title,
-        {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
+      setTextwSpec(head, "haaderCards.head", data.items[i].title);
 
       // 内容（head を起点に）
       const body = insertShapeRelative(slide, head, "headerCards.DYNAMIC_BODY");
@@ -599,7 +624,13 @@ function createKpiSlide(slide, data) {
   const rows = Math.ceil(length/cols);
 
   // --- cards(KPI) を作って、順に ---
-  const cards = insertCards(slide, bodyArea, "kpiSlide.kpi", rows, cols, length);
+  const shape = "kpiSlide.kpi";
+  const cards = insertCards(slide, bodyArea, shape, rows, cols, length);
+
+  const shapeLabel = "kpiSlide.label";
+  const shapeChange = "kpiSlide.change";
+
+  // --- cardsを順に ---"
 
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
@@ -608,20 +639,18 @@ function createKpiSlide(slide, data) {
 
       // KPI
       const kpi = cards[i];
-      setTextwParam(kpi, data.items[i].value || "0",
-        {size: CONFIG.FONT_SIZES.kpi, bold: true, align: "CENTER"});
+      setTextwSpec(kpi, shape, data.items[i].value || "0");
 
       // label（kpi を起点に）
-      const label = insertShapeRelative(slide, kpi, "kpiSlide.label");
-      setTextwParam(label, data.items[i].label || "KPI",
-        {align: "START", color: CONFIG.COLORS.neutral_gray});
+      const label = insertShapeRelative(slide, kpi, shapeLabel);
+      setTextwSpec(label, shapeLabel, data.items[i].label || "KPI");
 
       // change（kpi を起点に）
-      const change = insertShapeRelative(slide, kpi, "kpiSlide.change");
-      setTextwParam(change, data.items[i].change || " ",
-        {align: "END", 
+      const change = insertShapeRelative(slide, kpi, shapeChange);
+      setTextwSpec(change, shapeChange, data.items[i].change || " ", {
         bold: (data.items[i].status||"") == "good" ? true : false,
-        color: (data.items[i].status||"").match(/(good|bad)/) ? CONFIG.COLORS.primary_color : CONFIG.COLORS.text_primary});
+        color: (data.items[i].status||"").match(/(good|bad)/) ? "primary_color" : "text_primary"
+      });
 
     }
   }
@@ -637,9 +666,11 @@ function createProcessSlide(slide, data) {
   drawSubHeader(slide, data.subhead);
 
   // 描画エリア
+  const shape = "processSlide.numBox";
+
   const bodyArea = insertTextBox(slide, "body.area");  // 相対位置のために一旦作成「最後に消す」
   const length = data.steps.length;
-  const margin = getArea(bodyArea, "processSlide.numBox").H / length;
+  const margin = getArea(bodyArea, shape).H / length;
 
   // --- プロセスを順に ---
   let cs = [];
@@ -647,8 +678,8 @@ function createProcessSlide(slide, data) {
     // 番号
     // パディングは調整できないらしい、ので諦める
     // https://qiita.com/k-akie/items/5a1aac7a53586bc6ec72
-    const numBox = insertShapeRelative(slide, bodyArea, "processSlide.numBox", {offsetH: margin*i});
-    setTextwParam(numBox, i+1, {color: CONFIG.COLORS.text_reverse, bold: true, align: "CENTER"});
+    const numBox = insertShapeRelative(slide, bodyArea, shape, {offsetH: margin*i});
+    setTextwSpec(numBox, shape, i+1);
 
     // プロセス
     const process = insertShapeRelative(slide, bodyArea, "processSlide.process", {offsetH: margin*i});
@@ -707,9 +738,9 @@ function createQuoteSlide(slide, data) {
   const bodyArea = insertTextBox(slide, "body.area");  // 相対位置のために一旦作成「最後に消す」
 
   // “（左ダブル引用符）
-  const markShpae = insertShapeRelative(slide, bodyArea, "quoteSlide.quoteMark");
-  setTextwParam(markShpae, "“",
-    {color: CONFIG.COLORS.ghost_gray, size: CONFIG.FONT_SIZES.ghostNum, bold: true});
+  const shape = "quoteSlide.quoteMark";
+  const markShpae = insertShapeRelative(slide, bodyArea, shape);
+  setTextwSpec(markShpae, shape, "“");
 
   // テキスト
   const textShape = insertShapeRelative(slide, bodyArea, "quoteSlide.quoteText");
@@ -736,20 +767,21 @@ function createTimelineSlide(slide, data) {
   const margin = getArea(bodyArea, "timelineSlide.dot").W / (length-1);
 
   // --- マイルストーンを順に ---
+  const shapeLabel = "timelineSlide.label";
+  const shapeDate = "timelineSlide.date";
+
   let cs = [];
   for ( let m=0 ; m<length ; m++ ) {
     // ドット
     const dot = insertShapeRelative(slide, bodyArea, "timelineSlide.dot", {offsetW: margin*m, alpha: (m+1)/length});
 
     // ラベル（dot を起点に）
-    const label = insertShapeRelative(slide, dot, "timelineSlide.label");
-    setTextwParam(label, data.milestones[m]["label"],
-      {size: CONFIG.FONT_SIZES.small, bold: true, align: "CENTER"})
+    const label = insertShapeRelative(slide, dot, shapeLabel);
+    setTextwSpec(label, shapeLabel, data.milestones[m]["label"]);
 
     // 日付（dot を起点に）
-    const date = insertShapeRelative(slide, dot, "timelineSlide.date");
-    setTextwParam(date, data.milestones[m]["date"],
-      {size: CONFIG.FONT_SIZES.small, color: CONFIG.COLORS.neutral_gray, align: "CENTER"})
+    const date = insertShapeRelative(slide, dot, shapeDate);
+    setTextwSpec(date, shapeDate, data.milestones[m]["date"]);
 
     // マイルストーンを線でつなげる
     cs.push(dot.getConnectionSites());
@@ -773,27 +805,33 @@ function createTableSlide(slide, data) {
   drawSubHeader(slide, data.subhead);
 
   // テーブル
+  let shape;
   const cols = data.headers.length;
   const rows = data.rows.length;
-  const spec = _spec("body.table");
-  const table = insertTable(slide, spec, {rows: rows+1, cols: cols});
+  shape = "tableSlide.table";
+  const table = insertTable(slide, shape, {rows: rows+1, cols: cols});
 
   // ヘッダー
+  shape = "tableSlide.header";
+  const header = _spec(shape);
+
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
-    cell.setContentAlignment(SlidesApp.ContentAlignment[spec.align || SHAPE.BASE.align]);
-    const headerColor = CONFIG.COLORS[spec.headerColor] || spec.headerColor;
+    cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.align]);
+    const headerColor = CONFIG.COLORS[header.color] || header.color;
     if (headerColor) { cell.getFill().setSolidFill(headerColor); }
 
-    setTextwParam(cell, data.headers[c],
-      {bold: true, align: "CENTER"});
+    setTextwSpec(cell, shape, data.headers[c]);
   }
 
   // データ
+  shape = "tableSlide.cells";
+  const cells = _spec(shape);
+
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
       const cell = table.getCell(r+1, c);
-      cell.setContentAlignment(SlidesApp.ContentAlignment[spec.align || SHAPE.BASE.align]);
+      cell.setContentAlignment(SlidesApp.ContentAlignment[cells.align || SHAPE.BASE.align]);
       setTextwStyle(cell, data.rows[r][c],
         {align: "CENTER"});
     }
@@ -821,9 +859,9 @@ function createProgressSlide(slide, data) {
 //---- スライドのパーツ ----
 // ヘッダー
 function drawHeader(slide, title) {
-  const headerShape = insertTextBox(slide, "header.title");
-  setTextwParam(headerShape, title,
-    {size: CONFIG.FONT_SIZES.header, bold: true});
+  const shape = "header.title";
+  const headerShape = insertTextBox(slide, shape);
+  setTextwSpec(headerShape, shape, title);
 }
 
 // サブヘッダー
@@ -953,7 +991,8 @@ function insertShapeRelative(slide, parent, shape, args={}) {
  * @param {number} length - 挿入するカードの総数。
  * @param {Object} [args] - 図形の追加設定を行うオプションオブジェクト。
  * @returns {Array<GoogleAppsScript.Slides.Shape>} - 作成されたカードのShapeオブジェクトの配列。
- */function insertCards(slide, area, shape, rows, cols, length, args={}) {
+ */
+function insertCards(slide, area, shape, rows, cols, length, args={}) {
   // 幅と高さの「最小単位」
   const unit = getUnit(area, shape, rows, cols);
 
@@ -991,10 +1030,12 @@ function insertShapeRelative(slide, parent, shape, args={}) {
 }
 
 // テーブル設置（スライドに対して）
-function insertTable(slide, spec, args={
+function insertTable(slide, shape, args={
   rows: 3, cols: 3 }) {
 
   // テーブルの挿入(→Table)
+  const spec = _spec(shape);
+
   // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#inserttablenumrows,-numcolumns,-left,-top,-width,-height
   const table = slide.insertTable(
     args.rows || 3,
@@ -1010,9 +1051,10 @@ function insertTable(slide, spec, args={
 
 // --- テキスト処理（主に整形） ---
 /**
- * 指定されたオブジェクトにテキストを設定し、引数で渡されたスタイルを適用します。
+ * 指定されたオブジェクトにテキストを設定し、SHAPE.*.textの定義と引数で渡されたスタイルを適用します。
  *
  * @param {GoogleAppsScript.Slides.Shape|GoogleAppsScript.Slides.TableCell} target - テキストを設定する対象オブジェクト（ShapeまたはTableCell）。
+ * @param {string} shape - SHAPEオブジェクト内の図形（うちテキストのスタイル定義を利用）へのパス文字列。
  * @param {string} text - 設定するテキストコンテンツ。
  * @param {Object} [args] - スタイル設定を行うオプションオブジェクト。
  * @param {string} [args.color=CONFIG.COLORS.text_primary] - テキストの色。
@@ -1021,8 +1063,10 @@ function insertTable(slide, spec, args={
  * @param {string} [args.align="START"] - 段落の水平方向の配置 ('START', 'CENTER', 'END', 'JUSTIFY')。
  * @returns {GoogleAppsScript.Slides.TextRange} - スタイル適用後のTextRangeオブジェクト。
  */
-function setTextwParam(target, text, args={
-  color: CONFIG.COLORS.text_primary, size: CONFIG.FONT_SIZES.body, bold: false, align: "START"}) {
+function setTextwSpec(target, shape, text, args={}) {
+  const base = _spec("BASE.text");
+  const spec = _spec(shape);
+  const allSpec = { ...base, ...spec.text, ...args };
 
   // テキストコンテンツ取得(→TextRange)
   // https://developers.google.com/apps-script/reference/slides/shape?hl=ja#getText()
@@ -1035,14 +1079,14 @@ function setTextwParam(target, text, args={
     // https://developers.google.com/apps-script/reference/slides/text-range?hl=ja#getTextStyle()
     .getTextStyle()
       .setFontFamily(CONFIG.FONTS.family)
-      .setForegroundColor(args.color || CONFIG.COLORS.text_primary)
-      .setFontSize(args.size || CONFIG.FONT_SIZES.body)
-      .setBold(!!args.bold);
+      .setForegroundColor(CONFIG.COLORS[allSpec.color] || CONFIG.COLORS["text_primary"])
+      .setFontSize(CONFIG.FONT_SIZES[allSpec.size])
+      .setBold(allSpec.bold);
 
   // アライメント設定（左右）
   // https://developers.google.com/apps-script/reference/slides/paragraph-style?hl=ja#setparagraphalignmentalignment
   // https://developers.google.com/apps-script/reference/slides/paragraph-alignment?hl=ja
-  textRange.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment[args.align || "START"]);
+  textRange.getParagraphStyle().setParagraphAlignment(SlidesApp.ParagraphAlignment[allSpec.align]);
 
   return textRange;
 }
