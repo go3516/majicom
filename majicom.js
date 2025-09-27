@@ -130,7 +130,7 @@ const  SHAPE = {
       },
 
       cards: {
-        card:         { left: 20, top: 20, width: 420, height: 240, shapetype: "ROUND_RECTANGLE",
+        card:         { left: 20, top: 20, width: 420, height: 240, shapetype: "ROUND_RECTANGLE", color: "bg_white",
                   text: { align: "CENTER" } },
       },
       headerCards: {
@@ -587,7 +587,8 @@ function createHeaderCardsSlide(slide, data) {
 
 
   // --- cardsを作って、順に ---
-  const cards = insertCards(slide, bodyArea, "headerCards.card", rows, cols, length);
+  const shape = "headerCards";
+  const cards = insertCards(slide, bodyArea, `${shape}.card`, rows, cols, length);
 
   // カード内（ヘッダーと内容）の高さ
   SHAPE.headerCards.DYNAMIC_HEAD = {
@@ -609,12 +610,12 @@ function createHeaderCardsSlide(slide, data) {
       const card = cards[i];
 
       // ヘッダー（card を起点に）
-      const head = insertShapeRelative(slide, card, "headerCards.DYNAMIC_HEAD");
-      setTextwSpec(head, "haaderCards.head", data.items[i].title);
+      const head = insertShapeRelative(slide, card, `${shape}.DYNAMIC_HEAD`);
+      setTextwSpec(head, `${shape}.head`, data.items[i].title);
 
       // 内容（head を起点に）
-      const body = insertShapeRelative(slide, head, "headerCards.DYNAMIC_BODY");
-      setStyledText(body, "headerCards.body", data.items[i].desc);
+      const body = insertShapeRelative(slide, head, `${shape}.DYNAMIC_BODY`);
+      setStyledText(body, `${shape}.body`, data.items[i].desc);
 
       card.remove();
 
