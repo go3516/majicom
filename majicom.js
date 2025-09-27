@@ -125,6 +125,7 @@ const  SHAPE = {
                   text: { bold: true, align: "CENTER" } },
           card:         { leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4}, color: "bg_white", border: "border",
                     text: { align: "CENTER" } },
+          line:         { weight: 2, color: "primary_color" },
       },
 
       cards: {
@@ -152,6 +153,7 @@ const  SHAPE = {
         numBox:       { left: 40, top: 40, width: 28, height: 28, color: "primary_color",
                   text: { color: "text_reverse", bold: true, align: "CENTER" } },
         process:      { left: 80, top: 40, width: 800, height: 28 },
+        line:         { weight: 2, color: "faint_gray" },
       },
       bulletCards: {
         card:         { left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4}, color: "bg_gray", border: "border" },
@@ -171,6 +173,7 @@ const  SHAPE = {
                     text: { size: "small", bold: true, align: "CENTER" } },
           date:         { left: -50+5, top: 20, width: 100, height: 20, align: "TOP",
                     text: { size: "small", color: "neutral_gray", align: "CENTER" } },
+          line:         { weight: 2, color: "neutral_gray" },
       },
       tableSlide: {
         table:        { left: 40, top: 160, width: 890, height: 330 },
@@ -525,9 +528,10 @@ function createDiagramSlide(slide, data) {
         // 左回りで0,1,2, な模様
         // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
         slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], csl[l-1][r][3], cs[r][1])
-          .setWeight(2)
           .setEndArrow(SlidesApp.ArrowStyle[CONFIG.PRESET.arrow])
-          .getLineFill().setSolidFill(CONFIG.COLORS.primary_color);
+          .setWeight(SHAPE.diagramSlide.line.weight || 2)
+          .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.diagramSlide.line.color || "primary_color"]);
+
       }
 
     }
@@ -705,8 +709,9 @@ function createProcessSlide(slide, data) {
       // 左回りで0,1,2, な模様
       // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
       slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], cs[i-1][2], cs[i][0])
-        .setWeight(2)
-        .getLineFill().setSolidFill(CONFIG.COLORS.faint_gray);
+        .setWeight(SHAPE.processSlide.line.weight || 2)
+        .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.processSlide.line.color || "faint_gray"]);
+
     }
 
   }
@@ -805,10 +810,11 @@ function createTimelineSlide(slide, data) {
       // 左回りで0,1,2, な模様 ＆ "ELLIPSE" の場合は0-7の8点ある
       // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
       slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], cs[m-1][6], cs[m][2])
-        .setWeight(2)
-        .getLineFill().setSolidFill(CONFIG.COLORS.neutral_gray);
+        .setWeight(SHAPE.timelineSlide.line.weight || 2)
+        .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.timelineSlide.line.color || "neutral_gray"]);
 
     }
+
   }
 
   bodyArea.remove();
