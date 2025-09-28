@@ -41,10 +41,6 @@ const CONFIG = {
     // https://developers.google.com/apps-script/reference/slides/list-preset?hl=ja
     ul:       "DISC_CIRCLE_SQUARE",   // 箇条書き「ディスク」、「円」、「正方形」
     ol:       "DIGIT_NESTED",         // 連番
-    // https://developers.google.com/apps-script/reference/slides/line-category?hl=ja
-    line:     "BENT",                 // コネクタの曲がり
-    // https://developers.google.com/apps-script/reference/slides/arrow-style?hl=ja
-    arrow:    "FILL_ARROW",           // 塗りつぶしの矢印
   },
   SPACING: {
     faq:      {space: 150},
@@ -62,8 +58,11 @@ const  SHAPE = {
   BASE: {
     width:  960,
     height: 540,
+
     shape: { shapetype: "TEXT_BOX", align: "MIDDLE", ratio: {W:10, H:8} },
     text: { color: "text_primary", size: "body", bold: false, align: "START" },
+    // https://developers.google.com/apps-script/reference/slides/line-category?hl=ja
+    line: { category: "BENT", weight: 2, color: "neutral_gray" },
   },
 
   // --- 基本スライド、パーツ(insertTextBox)
@@ -125,7 +124,8 @@ const  SHAPE = {
                   text: { bold: true, align: "CENTER" } },
           card:         { leftR: 1/20, top: 10, widthR: 9/10, height: 60, shapetype: "ROUND_RECTANGLE", ratio: {W:1, H:4}, color: "bg_white", border: "border",
                     text: { align: "CENTER" } },
-          line:         { weight: 2, color: "primary_color" },
+          // https://developers.google.com/apps-script/reference/slides/arrow-style?hl=ja
+          line:         { weight: 3, color: "primary_color", endarrow: "FILL_ARROW" },
       },
 
       cards: {
@@ -153,7 +153,7 @@ const  SHAPE = {
         numBox:       { left: 40, top: 40, width: 28, height: 28, color: "primary_color",
                   text: { color: "text_reverse", bold: true, align: "CENTER" } },
         process:      { left: 80, top: 40, width: 800, height: 28 },
-        line:         { weight: 2, color: "faint_gray" },
+        line:         { color: "faint_gray" },
       },
       bulletCards: {
         card:         { left: 10, top: 10, width: 890, height: 90, ratio: {W:1, H:4}, color: "bg_gray", border: "border" },
@@ -173,7 +173,7 @@ const  SHAPE = {
                     text: { size: "small", bold: true, align: "CENTER" } },
           date:         { left: -50+5, top: 20, width: 100, height: 20, align: "TOP",
                     text: { size: "small", color: "neutral_gray", align: "CENTER" } },
-          line:         { weight: 2, color: "neutral_gray" },
+          line:         { color: "neutral_gray" },
       },
       tableSlide: {
         table:        { left: 40, top: 160, width: 890, height: 330 },
@@ -508,6 +508,7 @@ function createDiagramSlide(slide, data) {
 
   // --- laneを順に（横・列 方向） ---
   shape = "diagramSlide.card";
+  shapeLine = "diagramSlide.line";
   let csl = [];
   for ( let l=0 ; l<cols ; l++ ) {
 
@@ -525,12 +526,8 @@ function createDiagramSlide(slide, data) {
       cs.push(card.getConnectionSites());
       // 左隣のlaneの同じ行に値があれば
       if ( l>0 && csl[l-1][r] ) {
-        // 左回りで0,1,2, な模様
-        // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
-        slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], csl[l-1][r][3], cs[r][1])
-          .setEndArrow(SlidesApp.ArrowStyle[CONFIG.PRESET.arrow])
-          .setWeight(SHAPE.diagramSlide.line.weight || 2)
-          .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.diagramSlide.line.color || "primary_color"]);
+        // 左回りで0,1,2, な模様（なので、左右で）
+        insertLinewSpec(slide, shapeLine, csl[l-1][r][3], cs[r][1]); 
 
       }
 
@@ -691,6 +688,8 @@ function createProcessSlide(slide, data) {
 
   // --- プロセスを順に ---
   const shapeProcess = "processSlide.process";
+  const shapeLine = "processSlide.line";
+
   let cs = [];
   for ( let i=0 ; i<length ; i++ ) {
     // 番号
@@ -706,11 +705,8 @@ function createProcessSlide(slide, data) {
     // プロセスを線でつなげる
     cs.push(numBox.getConnectionSites());
     if ( i > 0 ) {
-      // 左回りで0,1,2, な模様
-      // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
-      slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], cs[i-1][2], cs[i][0])
-        .setWeight(SHAPE.processSlide.line.weight || 2)
-        .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.processSlide.line.color || "faint_gray"]);
+      // 左回りで0,1,2, な模様（なので、上下で）
+      insertLinewSpec(slide, shapeLine, cs[i-1][2], cs[i][0],)
 
     }
 
@@ -790,6 +786,7 @@ function createTimelineSlide(slide, data) {
   // --- マイルストーンを順に ---
   const shapeLabel = "timelineSlide.label";
   const shapeDate = "timelineSlide.date";
+  const shapeLine = "timelineSlide.line";
 
   let cs = [];
   for ( let m=0 ; m<length ; m++ ) {
@@ -807,11 +804,8 @@ function createTimelineSlide(slide, data) {
     // マイルストーンを線でつなげる
     cs.push(dot.getConnectionSites());
     if ( m > 0 ) {
-      // 左回りで0,1,2, な模様 ＆ "ELLIPSE" の場合は0-7の8点ある
-      // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
-      slide.insertLine(SlidesApp.LineCategory[CONFIG.PRESET.line], cs[m-1][6], cs[m][2])
-        .setWeight(SHAPE.timelineSlide.line.weight || 2)
-        .getLineFill().setSolidFill(CONFIG.COLORS[SHAPE.timelineSlide.line.color || "neutral_gray"]);
+      // 左回りで0,1,2, な模様 ＆ "ELLIPSE" の場合は0-7の8点ある（ので、左右で）
+      insertLinewSpec(slide, shapeLine, cs[m-1][6], cs[m][2])
 
     }
 
@@ -831,16 +825,16 @@ function createTableSlide(slide, data) {
   const cols = data.headers.length;
   const rows = data.rows.length;
   shape = "tableSlide.table";
-  const table = insertTable(slide, shape, {rows: rows+1, cols: cols});
+  const table = insertTablewSpec(slide, shape, {rows: rows+1, cols: cols});
 
   // ヘッダー
   shape = "tableSlide.header";
   const header = _spec(shape);
+  const headerColor = CONFIG.COLORS[header.color];
 
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
     cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.shape.align]);
-    const headerColor = CONFIG.COLORS[header.color];
     if (headerColor) { cell.getFill().setSolidFill(headerColor); }
 
     setTextwSpec(cell, shape, data.headers[c]);
@@ -849,11 +843,14 @@ function createTableSlide(slide, data) {
   // データ
   shape = "tableSlide.cells";
   const cells = _spec(shape);
+  const cellsColor = CONFIG.COLORS[cells.color];
 
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
       const cell = table.getCell(r+1, c);
       cell.setContentAlignment(SlidesApp.ContentAlignment[cells.align || SHAPE.BASE.shape.align]);
+      if (cellsColor) { cell.getFill().setSolidFill(cellsColor); }
+
       setStyledText(cell, shape, data.rows[r][c]);
     }
   }
@@ -985,15 +982,11 @@ function insertShapeRelative(slide, parent, shape, args={}) {
 
   // 色の適用（キー名）
   const fillColor = CONFIG.COLORS[effective.color];
-  if (fillColor) {
     // alpha は 0 が有効な値なので || ではなく ?? (Null合体演算子) を使用
-    box.getFill().setSolidFill(fillColor, effective.alpha ?? 1);
-  }
+  if (fillColor) { box.getFill().setSolidFill(fillColor, effective.alpha ?? 1); }
 
   const borderColor = CONFIG.COLORS[effective.border];
-  if (borderColor) {
-    box.getBorder().getLineFill().setSolidFill(borderColor);
-  }
+  if (borderColor) { box.getBorder().getLineFill().setSolidFill(borderColor); }
 
   return box;
 }
@@ -1052,7 +1045,7 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
 }
 
 // テーブル設置（スライドに対して）
-function insertTable(slide, shape, args={ rows: 3, cols: 3 }) {
+function insertTablewSpec(slide, shape, args={ rows: 3, cols: 3 }) {
 
   // テーブルの挿入(→Table)
   const spec = _spec(shape);
@@ -1068,6 +1061,24 @@ function insertTable(slide, shape, args={ rows: 3, cols: 3 }) {
   );
 
   return table;
+}
+
+// 2つのオブジェクト（の接続サイト）を線でつなぐ
+function insertLinewSpec(slide, shape, csS, csE, args={}) {
+  const base = _spec("BASE.line");
+  const spec = _spec(shape);
+  const effective = { ...base, ...spec, ...args };
+
+  // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
+  const line = slide.insertLine(SlidesApp.LineCategory[effective.category], csS, csE)
+    .setWeight(effective.weight * SCALE.H);
+  line.getLineFill().setSolidFill(CONFIG.COLORS[effective.color]);
+
+  const endarrow = SlidesApp.ArrowStyle[effective.endarrow];
+  if (endarrow) { line.setEndArrow(endarrow); }
+
+  return line;
+
 }
 
 // --- テキスト処理（主に整形） ---
