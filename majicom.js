@@ -299,10 +299,9 @@ function createTitleSlide(slide, data) {
 function createSectionSlide(slide, data) {
   let shape;
   // セクション番号
-  SECTION_COUNTER++;
   shape = "sectionSlide.ghostNum";
   const numberShape = insertTextBox(slide, shape);
-  setTextwSpec(numberShape, shape, String(SECTION_COUNTER).padStart(2, "0"));
+  setTextwSpec(numberShape, shape, String(++SECTION_COUNTER).padStart(2, "0"));
  
   // タイトル
   shape = "sectionSlide.title";
