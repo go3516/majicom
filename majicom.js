@@ -906,23 +906,6 @@ function deepMerge(target, source) {
 }
 
 // --- オブジェクト設置 ---
-function insertLinewSpec(slide, shape, csS, csE, args={}) {
-  const base = _spec("BASE.line");
-  const spec = _spec(shape);
-  const effective = { ...base, ...spec, ...args };
-
-  // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
-  const line = slide.insertLine(SlidesApp.LineCategory[effective.category], csS, csE)
-    .setWeight(effective.weight * SCALE.H);
-  line.getLineFill().setSolidFill(CONFIG.COLORS[effective.color]);
-
-  const endarrow = SlidesApp.ArrowStyle[effective.endarrow];
-  if (endarrow) { line.setEndArrow(endarrow); }
-
-  return line;
-
-}
-  
 /**
  * SHAPE定義に基づいて、スライドにテキストボックスを挿入します。
  *
@@ -1078,6 +1061,24 @@ function insertTablewSpec(slide, shape, args={ rows: 3, cols: 3 }) {
   );
 
   return table;
+}
+
+// 2つのオブジェクト（の接続サイト）を線でつなぐ
+function insertLinewSpec(slide, shape, csS, csE, args={}) {
+  const base = _spec("BASE.line");
+  const spec = _spec(shape);
+  const effective = { ...base, ...spec, ...args };
+
+  // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
+  const line = slide.insertLine(SlidesApp.LineCategory[effective.category], csS, csE)
+    .setWeight(effective.weight * SCALE.H);
+  line.getLineFill().setSolidFill(CONFIG.COLORS[effective.color]);
+
+  const endarrow = SlidesApp.ArrowStyle[effective.endarrow];
+  if (endarrow) { line.setEndArrow(endarrow); }
+
+  return line;
+
 }
 
 // --- テキスト処理（主に整形） ---
