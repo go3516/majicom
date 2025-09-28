@@ -909,10 +909,15 @@ function deepMerge(target, source) {
 /**
  * SHAPE定義に基づいて、スライドにテキストボックスを挿入します。
  *
+ * `shape`定義に `centerW: true` を含めると、`left`座標が図形の左端ではなく中心になるように配置されます。
+ * 同様に `centerH: true` を含めると、`top`座標が図形の上端ではなく中心になるように配置されます。
+ * ※今のところ、leftRやtopRも含めて指定しないと、中心に配置されない
+ *
  * @param {GoogleAppsScript.Slides.Slide} slide - テキストボックスを挿入するスライドオブジェクト。
  * @param {string} shape - SHAPEオブジェクト内の図形定義へのパス文字列（例: 'titleSlide.title'）。
- * @param {Object} [args] - 追加のオプション設定。
- * @param {string} [args.align="MIDDLE"] - テキストの垂直方向の配置（'TOP', 'MIDDLE', 'BOTTOM'）。
+ * @param {Object} [args] - SHAPE定義を上書きするためのオプション設定。
+ * @param {string} [args.shapetype="TEXT_BOX"] - 挿入する図形の種類。
+ * @param {string} [args.align="MIDDLE"] - テキストの垂直方向の配置 ('TOP', 'MIDDLE', 'BOTTOM')。
  * @returns {GoogleAppsScript.Slides.Shape} - 作成されたテキストボックスのShapeオブジェクト。
  */
 function insertTextBox(slide, shape, args={}) {
@@ -951,7 +956,7 @@ function insertTextBox(slide, shape, args={}) {
  * @param {GoogleAppsScript.Slides.Slide} slide - 図形を挿入するスライドオブジェクト。
  * @param {GoogleAppsScript.Slides.Shape} parent - 相対位置の基準となる親図形オブジェクト。
  * @param {string} shape - SHAPEオブジェクト内の図形定義へのパス文字列。
- * @param {Object} [args] - 図形の追加設定を行うオプションオブジェクト。
+ * @param {Object} [args] - SHAPE定義を上書きするためのオプション設定。
  * @param {number} [args.offsetW=0] - 親オブジェクトからの水平オフセット(px)。
  * @param {number} [args.offsetH=0] - 親オブジェクトからの垂直オフセット(px)。
  * @param {string} [args.align="MIDDLE"] - テキストの垂直方向の配置 ('TOP', 'MIDDLE', 'BOTTOM')。
@@ -1044,6 +1049,37 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
   return cards;
 }
 
+/**
+ * SHAPE定義に基づき、2つの接続サイト間を線で結びます。
+ *
+ * @param {GoogleAppsScript.Slides.Slide} slide - 線を挿入するスライドオブジェクト。
+ * @param {string} shape - SHAPEオブジェクト内の線のスタイル定義へのパス文字列。
+ * @param {GoogleAppsScript.Slides.ConnectionSite} csS - 始点となる接続サイト。
+ * @param {GoogleAppsScript.Slides.ConnectionSite} csE - 終点となる接続サイト。
+ * @param {Object} [args] - SHAPE定義を上書きするためのオプション設定。
+ * @param {string} [args.category="BENT"] - 線の種類 ('BENT', 'STRAIGHT')。
+ * @param {number} [args.weight=2] - 線の太さ。
+ * @param {string} [args.color="neutral_gray"] - 線の色 (CONFIG.COLORSのキー)。
+ * @param {string} [args.endarrow] - 線の終点の矢印スタイル ('FILL_ARROW'など)。
+ * @returns {GoogleAppsScript.Slides.Line} 作成されたLineオブジェクト。
+ */
+function insertLinewSpec(slide, shape, csS, csE, args={}) {
+  const base = _spec("BASE.line");
+  const spec = _spec(shape);
+  const effective = { ...base, ...spec, ...args };
+
+  // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
+  const line = slide.insertLine(SlidesApp.LineCategory[effective.category], csS, csE)
+    .setWeight(effective.weight * SCALE.H);
+  line.getLineFill().setSolidFill(CONFIG.COLORS[effective.color]);
+
+  const endarrow = SlidesApp.ArrowStyle[effective.endarrow];
+  if (endarrow) { line.setEndArrow(endarrow); }
+
+  return line;
+
+}
+
 // テーブル設置（スライドに対して）
 function insertTablewSpec(slide, shape, args={ rows: 3, cols: 3 }) {
 
@@ -1063,24 +1099,6 @@ function insertTablewSpec(slide, shape, args={ rows: 3, cols: 3 }) {
   return table;
 }
 
-// 2つのオブジェクト（の接続サイト）を線でつなぐ
-function insertLinewSpec(slide, shape, csS, csE, args={}) {
-  const base = _spec("BASE.line");
-  const spec = _spec(shape);
-  const effective = { ...base, ...spec, ...args };
-
-  // https://developers.google.com/apps-script/reference/slides/slide?hl=ja#insertlinelinecategory,-startconnectionsite,-endconnectionsite
-  const line = slide.insertLine(SlidesApp.LineCategory[effective.category], csS, csE)
-    .setWeight(effective.weight * SCALE.H);
-  line.getLineFill().setSolidFill(CONFIG.COLORS[effective.color]);
-
-  const endarrow = SlidesApp.ArrowStyle[effective.endarrow];
-  if (endarrow) { line.setEndArrow(endarrow); }
-
-  return line;
-
-}
-
 // --- テキスト処理（主に整形） ---
 /**
  * 指定されたオブジェクトにテキストを設定し、SHAPE.*.textの定義と引数で渡されたスタイルを適用します。
@@ -1088,7 +1106,7 @@ function insertLinewSpec(slide, shape, csS, csE, args={}) {
  * @param {GoogleAppsScript.Slides.Shape|GoogleAppsScript.Slides.TableCell} target - テキストを設定する対象オブジェクト（ShapeまたはTableCell）。
  * @param {string} shape - SHAPEオブジェクト内の図形（うちテキストのスタイル定義を利用）へのパス文字列。
  * @param {string} text - 設定するテキストコンテンツ。
- * @param {Object} [args] - スタイル設定を行うオプションオブジェクト。
+ * @param {Object} [args] - SHAPE定義を上書きするためのオプション設定。
  * @param {string} [args.color="text_primary"] - テキストの色。
  * @param {number} [args.size="body"] - フォントサイズ（ポイント）。
  * @param {boolean} [args.bold=false] - テキストを太字にするかどうか。
@@ -1129,7 +1147,7 @@ function setTextwSpec(target, shape, text, args={}) {
  * @param {GoogleAppsScript.Slides.Shape|GoogleAppsScript.Slides.TableCell} target - テキストを設定する対象オブジェクト（ShapeまたはTableCell）。
  * @param {string} shape - SHAPEオブジェクト内の図形（うちテキストのスタイル定義を利用）へのパス文字列。
  * @param {string} text - スタイルマークアップを含むテキストコンテンツ。
- * @param {Object} [args] - 基本となるスタイル設定のオプションオブジェクト。
+ * @param {Object} [args] - SHAPE定義を上書きするためのオプション設定。
  * @param {string} [args.color="text_primary"] - デフォルトのテキストの色。
  * @param {number} [args.size="body"] - デフォルトのフォントサイズ（ポイント）。
  * @param {string} [args.align="START"] - 段落の水平方向の配置 ('START', 'CENTER', 'END', 'JUSTIFY')。
