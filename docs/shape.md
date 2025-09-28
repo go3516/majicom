@@ -31,13 +31,14 @@
 | `widthR` | `Number` | 親要素の幅に対する相対的な幅 (比率) |
 | `heightR` | `Number` | 親要素の高さに対する相対的な高さ (比率) |
 | `align` | `String` | テキストの垂直方向の配置 (`TOP`, `MIDDLE`, `BOTTOM`)。 |
+| `text` | `Object` | テキストのスタイル定義オブジェクト。`color`, `size`, `bold`, `align` (水平方向) を指定できます。 |
 
 #### insertTextBox 用
 
 | プロパティ | 型 | 説明 |
 | :--- | :--- | :--- |
-| `centerW` | `Boolean` | 水平方向で中央揃え |
-| `centerH` | `Boolean` | 垂直方向で中央揃え |
+| `centerW` | `Boolean` | `true`の場合、`left`座標が図形の左端ではなく中心になるように配置します。 |
+| `centerH` | `Boolean` | `true`の場合、`top`座標が図形の上端ではなく中心になるように配置します。 |
 
 #### insertShapeRelative 用
 
@@ -45,8 +46,8 @@
 | :--- | :--- | :--- |
 | `offsetW` | `Number` | 親オブジェクトからの水平オフセット(px) |
 | `offsetH` | `Number` | 親オブジェクトからの垂直オフセット(px) |
-| `color` | `String` | 図形の塗りつぶし色。`CONFIG.COLORS`のキー名 (例: `"primary_color"`) またはHEXカラーコード (例: `"#4285F4"`) で指定 |
-| `border` | `String` | 図形の境界線の色。`CONFIG.COLORS`のキー名 (例: `"border"`) またはHEXカラーコード (例: `"#dadce0"`) で指定 |
+| `color` | `String` | 図形の塗りつぶし色、または線の色。`CONFIG.COLORS`のキー名で指定。 |
+| `border` | `String` | 図形の境界線の色。`CONFIG.COLORS`のキー名で指定。 |
 | `alpha` | `Number` | 塗りつぶしの透明度 (0.0 ～ 1.0) |
 | `shapetype` | `String` | 図形の種類 (`ELLIPSE`, `ROUND_RECTANGLE` など) |
 
@@ -56,6 +57,12 @@
 | :--- | :--- | :--- |
 | `ratio` | `Object` | カードレイアウトなどで使用される幅と高さの比率 (`{W: 10, H: 8}`) |
 
+#### insertLine 用
+
+| プロパティ | 型 | 説明 |
+| `category` | `String` | `insertLinewSpec`で使われる線の種類 (`BENT`, `STRAIGHT` など) |
+| `weight` | `Number` | `insertLinewSpec`で使われる線の太さ(px) |
+| `endarrow` | `String` | `insertLinewSpec`で使われる線の終点の矢印スタイル (`FILL_ARROW` など) |
 
 ---
 
