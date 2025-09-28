@@ -48,6 +48,11 @@
 
 ### 1. 初回セットアップ
 
+### 超ショートカット
+以下の STEP1,STEP2-A まで完了した [Googleスライド](https://docs.google.com/presentation/d/1hXDVq6jKoYVTYpefySrmXdwsGdDgcNFNiOGB4LJdraA/edit?usp=drive_link) をコピーして使うことも可能です。
+* Googleスライドを開いて メニューバーから **【ファイル】→【コピーを作成】→【プレゼンテーション全体】** を選び、
+* 中央あたりの「フォルダ」を あなたの「マイドライブ」等に変更してから「コピーを作成」します
+
 #### STEP 1: Googleスライドの準備
 1.  あなたのGoogleスライドを開き、メニューバーから **【拡張機能】→【Apps Script】** を選び、スクリプトエディタを開きます。
 2.  ファイル一覧の横にある`+`アイコンから、「スクリプト」を**2つ**追加します。
