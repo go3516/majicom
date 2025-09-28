@@ -825,16 +825,16 @@ function createTableSlide(slide, data) {
   const cols = data.headers.length;
   const rows = data.rows.length;
   shape = "tableSlide.table";
-  const table = insertTable(slide, shape, {rows: rows+1, cols: cols});
+  const table = insertTablewSpec(slide, shape, {rows: rows+1, cols: cols});
 
   // ヘッダー
   shape = "tableSlide.header";
   const header = _spec(shape);
+  const headerColor = CONFIG.COLORS[header.color];
 
   for ( let c=0 ; c<cols ; c++ ) {
     const cell = table.getCell(0, c);
     cell.setContentAlignment(SlidesApp.ContentAlignment[header.align || SHAPE.BASE.shape.align]);
-    const headerColor = CONFIG.COLORS[header.color];
     if (headerColor) { cell.getFill().setSolidFill(headerColor); }
 
     setTextwSpec(cell, shape, data.headers[c]);
@@ -843,11 +843,14 @@ function createTableSlide(slide, data) {
   // データ
   shape = "tableSlide.cells";
   const cells = _spec(shape);
+  const cellsColor = CONFIG.COLORS[cells.color];
 
   for ( let r=0 ; r<rows ; r++ ) {
     for ( let c=0 ; c<cols ; c++ ) {
       const cell = table.getCell(r+1, c);
       cell.setContentAlignment(SlidesApp.ContentAlignment[cells.align || SHAPE.BASE.shape.align]);
+      if (cellsColor) { cell.getFill().setSolidFill(cellsColor); }
+
       setStyledText(cell, shape, data.rows[r][c]);
     }
   }
@@ -1059,7 +1062,7 @@ function insertCards(slide, area, shape, rows, cols, length, args={}) {
 }
 
 // テーブル設置（スライドに対して）
-function insertTable(slide, shape, args={ rows: 3, cols: 3 }) {
+function insertTablewSpec(slide, shape, args={ rows: 3, cols: 3 }) {
 
   // テーブルの挿入(→Table)
   const spec = _spec(shape);
